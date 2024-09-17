@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Assistência Técnica</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        main {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #343a40;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 0.5rem;
+        }
+
+        form label {
+            display: block;
+            margin: 0.5rem 0 0.2rem;
+            font-weight: bold;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        form button {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        form button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dashboard-card {
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-section input {
+            margin: 0.5rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+
+            nav a {
+                margin: 0.25rem 0;
+                padding: 0.5rem 1rem;
+            }
+
+            .section {
+                padding: 0.75rem;
+            }
+
+            form input, form select {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                font-size: 0.9rem;
+            }
+
+            nav a {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .section {
+                padding: 0.5rem;
+            }
+
+            form input, form select {
+                font-size: 0.85rem;
+            }
+
+            form button {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            ul li {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Assistência Técnica de Celulares</h1>
+        <nav>
+            <a href="#" data-section="produtos">Produtos</a>
+            <a href="#" data-section="vendas">Vendas</a>
+            <a href="#" data-section="clientes">Clientes</a>
+            <a href="#" data-section="dashboard">Dashboard</a>
+            <a href="#" data-section="perfil">Perfil</a>
+            <a href="#" data-section="relatorios">Relatórios</a>
+        </nav>
+    </header>
+    <main>
+        <section id="produtos" class="section">
+            <h2>Cadastro de Produtos</h2>
+            <form id="produto-form">
+                <label for="produto-nome">Nome:</label>
+                <input type="text" id="produto-nome" required>
+                <label for="produto-preco">Preço:</label>
+                <input type="number" id="produto-preco" step="0.01" required>
+                <label for="produto-quantidade">Quantidade:</label>
+                <input type="number" id="produto-quantidade" required>
+                <button type="submit">Adicionar Produto</button>
+            </form>
+            <ul id="produto-list"></ul>
+        </section>
+        <section id="vendas" class="section hidden">
+            <h2>Registro de Vendas</h2>
+            <form id="venda-form">
+                <label for="venda-produto">Produto:</label>
+                <select id="venda-produto" required></select>
+                <label for="venda-cliente">Cliente:</label>
+                <input type="text" id="venda-cliente" required>
+                <label for="venda-valor">Valor:</label>
+                <input type="number" id="venda-valor" step="0.01" required>
+                <label for="venda-data">Data de Pagamento:</label>
+                <input type="date" id="venda-data" required>
+                <button type="submit">Registrar Venda</button>
+            </form>
+            <ul id="venda-list"></ul>
+        </section>
+        <section id="clientes" class="section hidden">
+            <h2>Gestão de Clientes</h2>
+            <form id="cliente-form">
+                <label for="cliente-nome">Nome:</label>
+                <input type="text" id="cliente-nome" required>
+                <label for="cliente-whatsapp">WhatsApp:</label>
+                <input type="text" id="cliente-whatsapp" required>
+                <label for="cliente-data-pagamento">Data do Pagamento:</label>
+                <input type="date" id="cliente-data-pagamento" required>
+                <button type="submit">Adicionar Cliente</button>
+            </form>
+            <ul id="cliente-list"></ul>
+        </section>
+        <section id="dashboard" class="section hidden">
+            <h2>Dashboard</h2>
+            <div class="dashboard-card">
+                <h3>Total de Vendas</h3>
+                <p id="total-vendas">R$0,00</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Total de Produtos</h3>
+                <p id="total-produtos">0</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Total de Clientes</h3>
+                <p id="total-clientes">0</p>
+            </div>
+        </section>
+        <section id="perfil" class="section hidden profile-section">
+            <h2>Perfil do Usuário</h2>
+            <form id="perfil-form">
+                <label for="perfil-nome">Nome:</label>
+                <input type="text" id="perfil-nome" required>
+                <label for="perfil-email">Email:</label>
+                <input type="email" id="perfil-email" required>
+                <button type="submit">Atualizar Perfil</button>
+            </form>
+        </section>
+        <section id="relatorios" class="section hidden">
+            <h2>Relatórios</h2>
+            <!-- Conteúdo dos relatórios -->
+        </section>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const produtoForm = document.getElementById('produto-form');
+            const vendaForm = document.getElementById('venda-form');
+            const clienteForm = document.getElementById('cliente-form');
+            const perfilForm = document.getElementById('perfil-form');
+            const produtoList = document.getElementById('produto-list');
+            const vendaList = document.getElementById('venda-list');
+            const clienteList = document.getElementById('cliente-list');
+            const vendaProdutoSelect = document.getElementById('venda-produto');
+
+            let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+
+            function updateProdutoList() {
+                produtoList.innerHTML = '';
+                produtos.forEach((produto, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `${produto.nome} - R$${produto.preco} - Quantidade: ${produto.quantidade}`;
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Excluir';
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.onclick = () => {
+                        produtos.splice(index, 1);
+                        localStorage.setItem('produtos', JSON.stringify(produtos));
+                        updateProdutoList();
+                        updateVendaProdutoSelect();
+                        updateDashboard();
+                    };
+                    li.appendChild(deleteBtn);
+                    produtoList.appendChild(li);
+                });
+            }
+
+            function updateClienteList() {
+                clienteList.innerHTML = '';
+                clientes.forEach((cliente, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `${cliente.nome} - ${cliente.whatsapp}`;
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Excluir';
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.onclick = () => {
+                        clientes.splice(index, 1);
+                        localStorage.setItem('clientes', JSON.stringify(clientes));
+                        updateClienteList();
+                        updateDashboard();
+                    };
+                    li.appendChild(deleteBtn);
+                    clienteList.appendChild(li);
+                });
+            }
+
+            function updateVendaProdutoSelect() {
+                vendaProdutoSelect.innerHTML = '';
+                produtos.forEach((produto) => {
+                    const option = document.createElement('option');
+                    option.value = produto.nome;
+                    option.textContent = produto.nome;
+                    vendaProdutoSelect.appendChild(option);
+                });
+            }
+
+            function updateVendaList() {
+                vendaList.innerHTML = '';
+                vendas.forEach((venda, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `${venda.produto} - R$${venda.valor} - Cliente: ${venda.cliente} - Data: ${venda.data}`;
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Excluir';
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.onclick = () => {
+                        vendas.splice(index, 1);
+                        localStorage.setItem('vendas', JSON.stringify(vendas));
+                        updateVendaList();
+                        updateDashboard();
+                    };
+                    li.appendChild(deleteBtn);
+                    vendaList.appendChild(li);
+                });
+            }
+
+            function updateDashboard() {
+                const totalVendas = vendas.reduce((sum, venda) => sum + parseFloat(venda.valor), 0).toFixed(2);
+                document.getElementById('total-vendas').textContent = `R$${totalVendas}`;
+                document.getElementById('total-produtos').textContent = produtos.length;
+                document.getElementById('total-clientes').textContent = clientes.length;
+            }
+
+            produtoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nome = document.getElementById('produto-nome').value;
+                const preco = document.getElementById('produto-preco').value;
+                const quantidade = document.getElementById('produto-quantidade').value;
+                produtos.push({ nome, preco, quantidade });
+                localStorage.setItem('produtos', JSON.stringify(produtos));
+                updateProdutoList();
+                updateVendaProdutoSelect();
+                produtoForm.reset();
+                updateDashboard();
+            });
+
+            vendaForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const produto = document.getElementById('venda-produto').value;
+                const cliente = document.getElementById('venda-cliente').value;
+                const valor = document.getElementById('venda-valor').value;
+                const data = document.getElementById('venda-data').value;
+                vendas.push({ produto, cliente, valor, data });
+                localStorage.setItem('vendas', JSON.stringify(vendas));
+                updateVendaList();
+                updateDashboard();
+                vendaForm.reset();
+            });
+
+            clienteForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nome = document.getElementById('cliente-nome').value;
+                const whatsapp = document.getElementById('cliente-whatsapp').value;
+                const dataPagamento = document.getElementById('cliente-data-pagamento').value;
+                clientes.push({ nome, whatsapp, dataPagamento });
+                localStorage.setItem('clientes', JSON.stringify(clientes));
+                updateClienteList();
+                updateDashboard();
+                clienteForm.reset();
+            });
+
+            perfilForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nome = document.getElementById('perfil-nome').value;
+                const email = document.getElementById('perfil-email').value;
+                alert(`Perfil atualizado:\nNome: ${nome}\nEmail: ${email}`);
+                perfilForm.reset();
+            });
+
+            document.querySelectorAll('nav a').forEach((link) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('main section').forEach((section) => section.classList.add('hidden'));
+                    document.getElementById(e.target.getAttribute('data-section')).classList.remove('hidden');
+                });
+            });
+
+            updateDashboard();
+        });
+    </script>
+</body>
+</html>
